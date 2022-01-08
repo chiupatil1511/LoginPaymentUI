@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background-color: rgb(159, 210, 240);
+            padding: auto;
+            
+
+        }
+        ul {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+            }
+
+            li {
+            float: left;
+            }
+
+            li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            }
+
+            li a:hover {
+            background-color: #111;
+            }
+            .active {
+            background-color: #2586b3;
+            }
+
+        form {
+            background-color: rgb(255, 255, 255);
+            border: 1px solid #f1f1f1;
+            width: 35%;
+            float: right;
+            margin-right: 5%;
+            margin-top: 11%;
+
+        }
+
+        input[type=text],
+        input[type=number],
+        input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            /* border-radius: 20px; */
+        }
+
+        button {
+            background-color: #2586b3;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 20px;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        .imgcon {
+            text-align: center;
+            margin: 24px 0 12px 0;
+        }
+
+        img.avatar {
+            width: 30%;
+            border-radius: 50%;
+        }
+
+        .con {
+            padding: 16px;
+        }
+
+        span.pass {
+            float: right;
+            padding-top: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- navbar -->
+    
+    <ul>
+        <li><a  href="login.html">Login</a></li>
+        <li><a  class="active" href="payment.html">Payment</a></li>
+       
+    </ul>
+
+
+    <form action="" method="post">
+     
+
+        <div class="con">
+            <label for="carnum"><b>CARD NUMBER</b></label>
+            <input type="text" placeholder="Enter card number" name="carnum" required>
+
+            <label for="monyear"><b>MM / YY</b></label>
+            <input type="password" placeholder="Enter month year" name="monyear" required>
+
+            <label for="cvv"><b>CVV CODE</b></label>
+            <input type="text" placeholder="Enter cvv code" name="cvv" required>
+
+            <label for="name"><b>NAME ON THE CARD</b></label>
+            <input type="text" placeholder="Enter name" name="name" required>
+
+            <button id="rzp-button1">Pay</button>
+
+        </div>
+    </form>
+    <div>
+        <img src="image/pay.png" style="padding: 15px;width: 50%;">
+    </div>
+
+</body>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+var options = {
+    "key": "rzp_test_1aqDV00djMFxme", // Enter the Key ID generated from the Dashboard
+    "amount": "500", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "Acme Corp",
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id": "order_IhE0NZut30LtKa", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "handler": function (response){
+        alert(response.razorpay_payment_id);
+        alert(response.razorpay_order_id);
+        alert(response.razorpay_signature)
+    },
+    "prefill": {
+        "name": "Gaurav Kumar",
+        "email": "gaurav.kumar@example.com",
+        "contact": "9999999999"
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options);
+rzp1.on('payment.failed', function (response){
+        alert(response.error.code);
+        alert(response.error.description);
+        alert(response.error.source);
+        alert(response.error.step);
+        alert(response.error.reason);
+        alert(response.error.metadata.order_id);
+        alert(response.error.metadata.payment_id);
+});
+document.getElementById('rzp-button1').onclick = function(e){
+    rzp1.open();
+    e.preventDefault();
+}
+</script>
+
+</html>
